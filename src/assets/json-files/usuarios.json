@@ -1,0 +1,31 @@
+[
+    {
+        "nome": "Eduardo Lucas",
+        "email": "eduardolucas40@gmail.com",
+        "senha": "123456",
+        "tipo": "usuario",
+        "ativo": "S"
+    },
+    {
+        "nome": "Abel Costa",
+        "email": "abelcosta@usesoft.com.br",
+        "senha": "123456",
+        "tipo": "usuario",
+        "ativo": "S"
+    },
+    {
+        "nome": "Yuri Carvalho",
+        "email": "yuri@usesoft.com.br",
+        "senha": "123456",
+        "tipo": "usuario",
+        "ativo": "S"
+
+    },
+    {
+        "nome": "Andre Santos",
+        "email": "andresantos_18@outlook.com",
+        "senha": "123456",
+        "tipo": "usuario",
+        "ativo": "S"
+    }
+]

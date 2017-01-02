@@ -1,0 +1,32 @@
+[
+    {
+        "nome": "Contas a Pagar"
+    },
+    {
+        "nome": "Contas a Receber"
+    },
+    {
+        "nome": "Estoque"
+    },
+    {
+        "nome": "Contabilidade"
+    },
+    {
+        "nome": "Custos"
+    },
+    {
+        "nome": "Compras"
+    },
+    {
+        "nome": "Vendas"
+    },
+    {
+        "nome": "Produção"
+    },
+    {
+        "nome": "Expedição"
+    },
+    {
+        "nome": "Faturamento"
+    }
+]

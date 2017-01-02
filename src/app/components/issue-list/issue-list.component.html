@@ -1,0 +1,298 @@
+<h1>Registro de Ocorrências</h1>
+<!-- BOTÃO DE ADICIONAR REGISTRO E FILTROS -->
+<div class="row">
+  <div *ngIf="auth.authenticated()" class="col-md-3">
+    <button (click)="changeState('add')" type="button" class="btn btn-success btn-md" data-toggle="tooltip" data-placement="left"
+      title="Adicionar Ocorrência">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+
+      </button>
+  </div>
+
+  <div class="col-md-3">
+    <label> Filtra por Módulo
+      <select (change)="filterModulo(filteredModulo.value)" #filteredModulo>
+        <option value="0">Escolha: </option>
+        <option *ngFor="let modulo of modulos" value="{{modulo.nome}}">{{modulo.nome}}</option>
+      </select>
+    </label>
+  </div>
+</div>
+
+
+
+<!-- ADICIONA O REGISTRO -->
+<div *ngIf="appState == 'add'" class="row">
+  <h3><strong>Adicionar registro</strong></h3>
+  <div class="row">
+
+    <form (submit)="addIssueRegister(
+          type.value,           
+          raised_by.value,
+          author_name.value,
+          description.value, 
+          module.value)">
+
+      <div class="row">
+        <div class="col-md-12">
+          <label>Descrição
+                <textarea type="text" placeholder="Informe a descrição" autofocus="true" required="true" rows="4" cols="145" #description></textarea>
+              </label>
+        </div>
+
+      </div>
+
+      <!-- OUTRA LINHA -->
+      <div class="row">
+
+        <div class="col-md-4">
+          <label>Situação
+                <select required #situacao>
+                  <option value="Aberta">Aberta </option>
+                  <!-- <option *ngFor="let situacao of situacoes" value="{{situacao.nome}}">{{situacao.nome}}</option> -->
+                 </select>
+              </label>
+        </div>
+
+        <div class="col-md-4">
+          <label>Módulo
+                <select required #module>
+                  <option value="0">Escolha: </option>
+                  <option *ngFor="let modulo of modulos" value="{{modulo.nome}}">{{modulo.nome}}</option>
+                 </select>
+              </label>
+        </div>
+
+        <div class="col-md-4">
+          <label>Tipo
+                    <select required #type>
+                      <option value="0">Escolha: </option>
+                      <option *ngFor="let tipo of tipos" value="{{tipo.nome}}">{{tipo.nome}}</option>
+                    </select>
+               </label>
+        </div>
+      </div>
+      <!-- OUTRA LINHA -->
+
+      <div class="row">
+        <div class="col-md-4">
+          <label>Funcionário
+                <input type="text" placeholder="Pessoa que relatou o problema" #raised_by required>
+              </label>
+        </div>
+        <div class="col-md-4">
+          <label>Autor
+                <input type="text" placeholder="Pessoa que realiza o cadastro" value="{{profile.name}}" #author_name required>
+              </label>
+        </div>
+      </div>
+
+
+          <div class="row">
+            <div class="btn-group">
+              <input id="addButton" type="submit" class="btn btn-success btn-md"  value="Gravar">    
+              <button (click)="changeState('default')" type="button" class="btn btn-primary btn-md" data-toggle="tooltip" data-placement="left" title="Cancelar">Cancelar</button>
+            </div>
+          </div>  
+
+    </form>
+
+  </div>
+</div>
+
+<!-- EDITA O REGISTRO -->
+<div *ngIf="appState == 'edit'" class="row">
+  <h3><strong>Editar registro</strong></h3>
+  <div class="row ">
+
+    <form (submit)="updateIssueRegister()">
+
+      <!-- PRMEIRA LINHA -->
+      <div class="row">
+        <div class="col-md-12">
+          <label>Descrição
+                <textarea type="text" [(ngModel)]="activeDescription" name="activeDescription" placeholder="Informe a descrição" autofocus="true" required="true" rows="4" cols="145" #description></textarea>
+              </label>
+        </div>
+      </div>
+
+      <!-- SEGUNDA LINHA -->
+      <div class="row">
+        <div class="col-md-4">
+          <label>Situação
+                <select   [(ngModel)]="activeSituacao" name="activeSituacao" #situacao required>
+                  <option value="0">Escolha: </option>
+                  <option *ngFor="let situacao of situacoes" value="{{situacao.nome}}">{{situacao.nome}}</option>
+                 </select>
+              </label>
+        </div>
+
+        <div class="col-md-4">
+          <label>Módulo
+                <select   [(ngModel)]="activeModule" name="activeModule" #module required>
+                  <option value="0">Escolha: </option>
+                  <option *ngFor="let modulo of modulos" value="{{modulo.nome}}">{{modulo.nome}}</option>
+                 </select>
+              </label>
+        </div>
+
+        <div class="col-md-4">
+          <label>Tipo
+                    <select [(ngModel)]="activeType" name="activeType"  #type required>
+                      <option value="0">Escolha: </option>
+                      <option *ngFor="let tipo of tipos" value="{{tipo.nome}}">{{tipo.nome}}</option>
+                    </select>
+               </label>
+        </div>
+      </div>
+
+      <!-- TERCEIRA LINHA -->
+      <div class="row">
+        <div class="col-md-4">
+          <label>Funcionário
+                <input type="text" [(ngModel)]="activeRaised_by" name="activeRaised_by" placeholder="Pessoa que relatou o problema" #raised_by required>
+              </label>
+        </div>
+        <div class="col-md-4">
+          <label>Autor
+                <input type="text" [(ngModel)]="activeAuthor_name" name="activeAuthor_name" placeholder="Pessoa que realiza o cadastro" #author_name required>
+              </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="btn-group">
+          <input type="submit" class="btn btn-success btn-md" value="Atualizar">
+          <button (click)="changeState('default')" type="button" class="btn btn-primary btn-md" data-toggle="tooltip" data-placement="left"
+            title="Cancelar">Cancelar</button>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+
+
+<!-- DETALHES -->
+<div *ngIf="appState == 'extend'">
+  <div class="row">
+    <div class="col-md-12">
+      <button (click)="changeState('default')" type="button" class="btn btn-default btn-md" data-toggle="tooltip" data-placement="left"
+        title="Voltar">
+                            <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngFor="let issue of issueregisters">
+      <div *ngIf="issue.$key == activeKey">
+        <div class=col-md-5>
+          <h3>Tipo: {{issue.type}} </h3>
+          <p>Data: {{issue.date_raised}} </p>
+          <p>Quem relatou o problema: {{issue.raised_by}} </p>
+          <p>Quem tomou nota do problema: {{issue.author_name}} </p>
+        </div>
+        <div class=col-md-5>
+          <h3> Descrição: {{issue.description}} </h3>
+          <ul>
+            <li> Módulo do Sistema: {{issue.module}} </li>
+            <li> Situação: {{issue.situacao}} </li>
+            <li> Data de Fechamento: {{issue.closure_date}} </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIM DE DETALHES -->
+
+<!-- LISTA -->
+<div class="row">
+  <div class="col-md-12">
+    <div *ngIf="issueregisters">
+      <table class="table-striped table-bordered table-hover" >
+        <thead>
+          <tr>
+            <th>Situação</th>
+            <th>Tipo</th>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Módulo</th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+          </tr>
+        </thead>
+        <tbody id="mydata">
+          <tr *ngFor="let issue of issueregisters">
+            <td>{{issue.situacao}}</td>
+            <td>{{issue.type}}</td>
+            <td>{{issue.date_raised}}</td>
+            <td>{{issue.description}}</td>
+            <td>{{issue.module}}</td>
+            <td>
+              <button (click)="changeState('extend', issue.$key)" type="button" class="btn btn-default btn-md" data-toggle="tooltip" data-placement="left"
+                title="Mostrar Detalhes">
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+              </button>
+            </td>
+            <td *ngIf="auth.authenticated()">
+              <button (click)="showEdit(issue)" type="button" class="btn btn-primary btn-md" data-toggle="tooltip" data-placement="left"
+                title="Editar">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+              </button>
+
+              <!--          
+              <button id="btnDelete" (click)="deleteIssueRegister(issue.$key)" type="button" class="btn btn-danger btn-md" data-toggle="tooltip" data-placement="left" title="Deletar">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              </button>
+              -->
+
+              <!-- Button trigger modal -->
+              <button (click)="changeState('default', issue.$key)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal"
+                data-placement="left" title="Deletar">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Deseja deletar o registro? Esta operação não poderá ser desfeita!</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div *ngFor="let issue of issueregisters">
+                        <div *ngIf="issue.$key == activeKey">
+                          <strong>Apagar a ocorrência do Tipo:</strong> {{issue.type}} <strong>do dia </strong>{{issue.date_raised}}<strong>  com a descrição </strong>{{issue.description}}
+                          ?
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                      <button (click)="deleteIssueRegister(activeKey)" type="button" class="btn btn-danger" data-dismiss="modal">Continuar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <script>
+        $('#mydata').dataTable();
+    </script>
+    </div> <!-- *ngIf="issueregisters" -->        
+  </div>   <!-- col-md-12 -->
+</div>     <!-- row -->
+<!-- FIM DA LISTA -->
+
+
